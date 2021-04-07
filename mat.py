@@ -23,7 +23,11 @@ class FoodAPI:
 
 def plugin_directory():
     home_directory = os.getenv('HOME')
-    return os.path.join(home_directory, MAT_DIR)
+    dot_mat = os.path.join(home_directory, MAT_DIR)
+    if os.path.isdir(dot_mat):
+        return dot_mat
+    else:
+        return "plugins"
 
 def color_codes(use_color):
     if use_color:
