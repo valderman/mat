@@ -1,6 +1,14 @@
 ## Mat!
 "What's for lunch" script for restaurants around Grönsakstorget, Gothenburg
 
+## Usage
+```bash
+./mat.py -p <plugin directory>
+```
+
+If no plugin directory is specified, `$HOME/.mat` is used if it exists.
+If it doesn't, `./plugins` is used instead.
+
 ### Dependencies
 bs4, requests, importlib and argparse
 
