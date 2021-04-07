@@ -36,6 +36,17 @@ class FoodAPI:
     pdf = fitz
     food = Food
 
+    def is_today(self, date):
+        return date == datetime.date.today()
+
+    def is_current_week(self, date):
+        return date.isocalendar().week == datetime.date.today().isocalendar().week
+
+    def is_weekday(self, date):
+        return date.isoweekday() <= 5
+
+foodAPI = FoodAPI()
+
 def plugin_directory():
     home_directory = os.getenv('HOME')
     dot_mat = os.path.join(home_directory, MAT_DIR)
@@ -81,7 +92,7 @@ class Mat:
     def get_dishes(self, date):
         if not self._plugins:
             self._plugins = self._load_plugins()
-        restaurants = map(lambda p: Restaurant(p.name(), p.food(FoodAPI, date)), self._plugins)
+        restaurants = map(lambda p: Restaurant(p.name(), p.food(foodAPI, date)), self._plugins)
         return filter(lambda r: r.dishes, restaurants)
 
     def print_menu(self, date):

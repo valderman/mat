@@ -11,9 +11,9 @@ __days = [
 ]
 
 def food(api, date):
-    if date.isocalendar().week != datetime.date.today().isocalendar().week:
+    if not api.is_current_week(date):
         return []
-    if date.isoweekday() > 5:
+    if not api.is_weekday(date):
         return []
     if not api.pdf:
         return []

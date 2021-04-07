@@ -7,7 +7,7 @@ __days = [
 ]
 
 def food(api, date):
-    if date.isoweekday() > 5:
+    if not api.is_weekday(date):
         return []
     if not api.soup:
         return []

@@ -1,7 +1,7 @@
 import datetime
 
 def food(api, date):
-    if date != datetime.date.today():
+    if not api.is_today(date):
         return []
     if not api.soup:
         return []

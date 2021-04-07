@@ -41,5 +41,9 @@ Plugins need to export two functions:
 `api.food(dish, dish_description)`.
 
 For convenience, `api` also contains the following:
-* `soup`: reexport of `bs4.BeautifulSoup`
+* `soup`: reexport of `bs4.BeautifulSoup` if available, otherwise `None`
+* `pdf`: reexport of `fitz` from `PyMuPDF` if available, otherwise `None`
 * `requests`: reexport of `requests`
+* `is_today(date)`: returns `True` if `date` is today's date
+* `is_current_week(date)`: returns `True` if `date` is in the current week
+* `is_weekday(date)`: returns `True` if `date` is a weekday (ignoring holidays)

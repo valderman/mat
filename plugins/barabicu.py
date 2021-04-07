@@ -9,9 +9,9 @@ __days = [
 ]
 
 def food(api, date):
-    if date.isocalendar().week != datetime.date.today().isocalendar().week:
+    if not api.is_current_week(date):
         return []
-    if date.isoweekday() > 5:
+    if not api.is_weekday(date):
         return []
     if not api.soup:
         return []
@@ -27,7 +27,7 @@ def food(api, date):
     li_elements = soup.find_all("li")
     today_elements = filter(lambda e: e.get_text().startswith(lunch_heading), li_elements)
     today_element = list(today_elements)[0]
-    dishes = today_element.find_all("h3")
+    dishes = filter(lambda e: e.get_text(), today_element.find_all("h3"))
     descriptions = today_element.find_all("p")
 
     def make_food(dish_description):
