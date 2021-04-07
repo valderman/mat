@@ -19,6 +19,13 @@ For all other restaurants: `bs4`
       (using `pip install <dependency>` or similar).
     - Some plugins don't support menus for other dates than today.
 
+### Supported restaurants
+* [Barabicu](https://barabicu.se)
+* [Bee](https://beebar.se/goteborg/)
+* [Blackstone](https://blackstonesteakhouse.se/goteborg/)
+* [Jinx](https://www.jinxfoodtruck.com)
+* [Tandoori Kitchen](https://eattandoori.se)
+
 ### Contributing
 Is your favourite restaurant missing?
 [File a bug report](https://github.com/valderman/mat/issues/new)
