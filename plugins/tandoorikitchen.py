@@ -28,11 +28,12 @@ def food(api, date):
     # Filter out menu item numbers
     todays_menu = list(filter(lambda ln: not ln.isupper(), text[today_line+1 : end_line]))
 
-    def describe_dish(dish_text):
-        (dish, description) = dish_text
-        return api.food(dish, description)
+    def get_dishes(menu):
+        items = list(reversed(menu))
+        while items:
+            yield api.food(items.pop(), items.pop())
 
-    return list(map(describe_dish, zip(todays_menu, todays_menu[1:])))
+    return list(get_dishes(todays_menu))
 
 def name():
     return "Tandoori Kitchen"
