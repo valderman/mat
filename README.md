@@ -10,8 +10,8 @@ If no plugin directory is specified, `$HOME/.mat` is used if it exists.
 If it doesn't, `./plugins` is used instead.
 
 ### Dependencies
-For restaurants with PDF menus (Bee): `PyMuPDF`
-For all other restaurants: `bs4`
+* For restaurants with PDF menus (Bee): `PyMuPDF`
+* For all other restaurants: `bs4`
 
 ### Troubleshooting
 * Not all restaurants show up!
