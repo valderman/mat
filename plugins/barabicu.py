@@ -19,13 +19,19 @@ def food(api, date):
     response = api.requests.get('https://barabicu.se')
     soup = api.soup(response.content, 'html.parser')
 
-    if date == datetime.date.today():
-        lunch_heading = "Todays Lunch"
-    else:
-        lunch_heading = __days[date.isoweekday()-1]
-
     li_elements = soup.find_all("li")
-    today_elements = filter(lambda e: e.get_text().startswith(lunch_heading), li_elements)
+    lunch_heading = __days[date.isoweekday()-1]
+
+    # Barabicu don't seem to update the heading in sync with the actual date,
+    # so we can't assume "Todays Lunch" is the right heading just because date is today.
+    try:
+        today_elements = filter(lambda e: e.get_text().startswith(lunch_heading), li_elements)
+    except:
+        if date == datetime.date.today():
+            today_elements = filter(lambda e: e.get_text().startswith("Todays Lunch"), li_elements)
+        else:
+            return []
+
     today_element = list(today_elements)[0]
     dishes = filter(lambda e: e.get_text(), today_element.find_all("h3"))
     descriptions = today_element.find_all("p")
