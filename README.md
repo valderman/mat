@@ -13,8 +13,11 @@ If it doesn't, `./plugins` is used instead.
 For restaurants with PDF menus (Bee): `PyMuPDF`
 For all other restaurants: `bs4`
 
-If some restaurants don't show up, chances are you haven't installed one
-of the above dependencies.
+### Troubleshooting
+* Not all restaurants show up!
+    - Make sure you have installed all the above dependencies
+      (using `pip install <dependency>` or similar).
+    - Some plugins don't support menus for other dates than today.
 
 ### Contributing
 Is your favourite restaurant missing?
