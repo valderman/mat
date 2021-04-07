@@ -4,7 +4,16 @@ import importlib.machinery
 import datetime
 import argparse
 import os
-from bs4 import BeautifulSoup
+
+try:
+    from bs4 import BeautifulSoup
+except:
+    BeautifulSoup = None
+
+try:
+    import fitz
+except:
+    fitz = None
 
 MAT_DIR = '.mat'
 
@@ -19,6 +28,7 @@ class Food:
 class FoodAPI:
     soup = BeautifulSoup
     requests = requests
+    pdf = fitz
     food = Food
 
 def plugin_directory():
