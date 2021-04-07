@@ -87,7 +87,7 @@ class Mat:
         (heading, _, _, reset) = self.settings.color_codes
         title = f"{heading}{restaurant.name}{reset}"
         lines = [title] + list(map(self.describe_dish, restaurant.dishes))
-        return '\n'.join(lines)
+        return '\n'.join(sorted(lines))
 
     def get_dishes(self, date):
         if not self._plugins:
