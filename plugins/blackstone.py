@@ -4,8 +4,6 @@ __days = [
     u"Onsdag",
     u"Torsdag",
     u"Fredag",
-    u"Lördag",
-    u"Söndag",
     u"Hjärtligt välkomna! – Vännerna på Blackstone Steakhouse"
 ]
 

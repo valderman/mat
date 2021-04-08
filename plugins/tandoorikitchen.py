@@ -4,7 +4,6 @@ __days = [
     u"Onsdag:",
     u"Torsdag:",
     u"Fredag:",
-    u"Hjärtligt välkomna! – Vännerna på Blackstone Steakhouse"
 ]
 
 def food(api, date):
@@ -22,11 +21,14 @@ def food(api, date):
     today = __days[date.isoweekday() - 1]
     today_line = text.index(today)
 
-    end_text = __days[date.isoweekday()]
-    end_line = text.index(end_text)
-
     # Filter out menu item numbers
-    todays_menu = list(filter(lambda ln: not ln.isupper(), text[today_line+1 : end_line]))
+    if(today != __days[-1]):
+        end_text = __days[date.isoweekday()]
+        end_line = text.index(end_text)
+
+        todays_menu = list(filter(lambda ln: not ln.isupper(), text[today_line+1 : end_line]))
+    else:
+        todays_menu = list(filter(lambda ln: not ln.isupper(), text[today_line+1: ]))
 
     def get_dishes(menu):
         items = list(reversed(menu))
