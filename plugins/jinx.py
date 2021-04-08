@@ -1,12 +1,14 @@
 import datetime
 
 def food(api, date):
+    if not api.is_today(date):
+        return []
+    if not api.soup:
+        return []
+
     response = api.requests.get('https://www.foodora.se/en/restaurant/s8sq/jinx-dynasty')
     soup = api.soup(response.content, 'html.parser')
     text = list(map(lambda ln: ln.strip(), soup.get_text().splitlines()))
-
-    if date.strftime("%W") != datetime.date.today().strftime("%W"):
-        return []
 
     def find_dish(dish_name):
         start_line = text.index(dish_name)

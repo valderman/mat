@@ -1,3 +1,5 @@
+import datetime
+
 __days = [
     u"Måndag",
     u"Tisdag",
@@ -8,11 +10,17 @@ __days = [
 ]
 
 def food(api, date):
+    if not api.is_current_week(date):
+        return []
+    if not api.is_weekday(date):
+        return []
+    if not api.soup:
+        return []
+
     response = api.requests.get('https://www.blackstonesteakhouse.se/goteborg/')
     soup = api.soup(response.content, 'html.parser')
     text = soup.get_text().splitlines()
 
-    # TODO: fail when week is not current week
     today = __days[date.isoweekday() - 1]
     today_line = text.index(today)
 

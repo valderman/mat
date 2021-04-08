@@ -3,10 +3,15 @@ __days = [
     u"Tisdag:",
     u"Onsdag:",
     u"Torsdag:",
-    u"Fredag:",
+    u"Fredag:"
 ]
 
 def food(api, date):
+    if not api.is_weekday(date):
+        return []
+    if not api.soup:
+        return []
+
     response = api.requests.get('https://eattandoori.se/lunch.html')
     soup = api.soup(response.content, 'html.parser')
 
@@ -15,20 +20,18 @@ def food(api, date):
     stripped_lines = map(lambda ln: ln.strip(), raw_text.splitlines())
     text = list(filter(lambda ln: ln, stripped_lines))
 
-    if date.isoweekday() > 5:
-        return []
-
     today = __days[date.isoweekday() - 1]
     today_line = text.index(today)
 
-    # Filter out menu item numbers
-    if(today != __days[-1]):
+    if date.isoweekday() == 5:
+        menu_text = text[today_line+1 :]
+    else:
         end_text = __days[date.isoweekday()]
         end_line = text.index(end_text)
+        menu_text = text[today_line+1 : end_line]
 
-        todays_menu = list(filter(lambda ln: not ln.isupper(), text[today_line+1 : end_line]))
-    else:
-        todays_menu = list(filter(lambda ln: not ln.isupper(), text[today_line+1: ]))
+    # Filter out menu item numbers
+    todays_menu = list(filter(lambda ln: not ln.isupper(), menu_text))
 
     def get_dishes(menu):
         items = list(reversed(menu))

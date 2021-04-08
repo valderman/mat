@@ -5,7 +5,16 @@ import datetime
 from datetime import timedelta
 import argparse
 import os
-from bs4 import BeautifulSoup
+
+try:
+    from bs4 import BeautifulSoup
+except:
+    BeautifulSoup = None
+
+try:
+    import fitz
+except:
+    fitz = None
 
 MAT_DIR = '.mat'
 
@@ -17,10 +26,27 @@ class Food:
     def pretty(self):
         return f"{self.title}\n  {self.description}"
 
+class Restaurant:
+    def __init__(self, name, dishes):
+        self.name = name
+        self.dishes = dishes
+
 class FoodAPI:
     soup = BeautifulSoup
     requests = requests
+    pdf = fitz
     food = Food
+
+    def is_today(self, date):
+        return date == datetime.date.today()
+
+    def is_current_week(self, date):
+        return date.isocalendar().week == datetime.date.today().isocalendar().week
+
+    def is_weekday(self, date):
+        return date.isoweekday() <= 5
+
+foodAPI = FoodAPI()
 
 def plugin_directory():
     home_directory = os.getenv('HOME')
@@ -39,6 +65,7 @@ def color_codes(use_color):
 class Mat:
     def __init__(self, settings):
         self.settings = settings
+        self._plugins = None
 
     def __print_date_heading(self, date):
         (heading, subheading, _, reset) = self.settings.color_codes
@@ -46,7 +73,7 @@ class Mat:
         datestr = date.strftime("%d-%m-%Y")
         print(f"{subheading}Menu for {heading}{day}{reset} ({datestr})\n")
 
-    def load_plugins(self):
+    def _load_plugins(self):
         directory = self.settings.plugin_directory
         for file in sorted(os.listdir(directory)):
             if file[-3:] == ".py":
@@ -63,19 +90,24 @@ class Mat:
         else:
             return dish_name
 
-    def describe_menu(self, plugin, date):
+    def describe_menu(self, restaurant, date):
         (heading, _, _, reset) = self.settings.color_codes
-        restaurant = f"{heading}{plugin.name()}{reset}"
-        menu_items = plugin.food(FoodAPI, date)
-        lines = [restaurant] + list(map(self.describe_dish, menu_items))
+        title = f"{heading}{restaurant.name}{reset}"
+        lines = [title] + list(map(self.describe_dish, restaurant.dishes))
         return '\n'.join(lines)
+
+    def get_dishes(self, date):
+        if not self._plugins:
+            self._plugins = self._load_plugins()
+        restaurants = map(lambda p: Restaurant(p.name(), p.food(foodAPI, date)), self._plugins)
+        return sorted(filter(lambda r: r.dishes, restaurants), key = lambda r: r.name)
 
     def print_menu(self, date):
         if self.settings.tomorrow:
             date += timedelta(days=1)
 
         self.__print_date_heading(date)
-        offerings = map(lambda p: self.describe_menu(p, date), self.load_plugins())
+        offerings = map(lambda r: self.describe_menu(r, date), self.get_dishes(date))
         print('\n\n'.join(offerings))
 
 def parse_args():
