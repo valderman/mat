@@ -24,9 +24,8 @@ def food(api, date):
 
     # Barabicu don't seem to update the heading in sync with the actual date,
     # so we can't assume "Todays Lunch" is the right heading just because date is today.
-    try:
-        today_elements = filter(lambda e: e.get_text().startswith(lunch_heading), li_elements)
-    except:
+    today_elements = list(filter(lambda e: e.get_text().startswith(lunch_heading), li_elements))
+    if not today_elements:
         if date == datetime.date.today():
             today_elements = filter(lambda e: e.get_text().startswith("Todays Lunch"), li_elements)
         else:
