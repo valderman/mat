@@ -2,6 +2,7 @@
 import requests
 import importlib.machinery
 import datetime
+from datetime import timedelta
 import argparse
 import os
 
@@ -66,6 +67,12 @@ class Mat:
         self.settings = settings
         self._plugins = None
 
+    def __print_date_heading(self, date):
+        (heading, subheading, _, reset) = self.settings.color_codes
+        day = date.strftime("%A")
+        datestr = date.strftime("%d-%m-%Y")
+        print(f"{subheading}Menu for {heading}{day}{reset} ({datestr})\n")
+
     def _load_plugins(self):
         directory = self.settings.plugin_directory
         for file in sorted(os.listdir(directory)):
@@ -96,11 +103,23 @@ class Mat:
         return sorted(filter(lambda r: r.dishes, restaurants), key = lambda r: r.name)
 
     def print_menu(self, date):
+        if self.settings.tomorrow:
+            date += timedelta(days=1)
+
+        self.__print_date_heading(date)
         offerings = map(lambda r: self.describe_menu(r, date), self.get_dishes(date))
         print('\n\n'.join(offerings))
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Show today's food options.")
+    parser.add_argument(
+        '--tomorrow', '-t',
+        dest = 'tomorrow',
+        action = 'store_const',
+        const = True,
+        default = False,
+        help = 'show menu for tomorrow instead of today'
+    )
     parser.add_argument(
         '--verbose', '-v',
         dest = 'verbose',
