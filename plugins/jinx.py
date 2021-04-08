@@ -5,7 +5,7 @@ def food(api, date):
     soup = api.soup(response.content, 'html.parser')
     text = list(map(lambda ln: ln.strip(), soup.get_text().splitlines()))
 
-    if date != datetime.date.today():
+    if date.strftime("%W") != datetime.date.today().strftime("%W"):
         return []
 
     def find_dish(dish_name):
