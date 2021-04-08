@@ -2,6 +2,7 @@
 import requests
 import importlib.machinery
 import datetime
+from datetime import timedelta
 import argparse
 import os
 from bs4 import BeautifulSoup
@@ -39,6 +40,12 @@ class Mat:
     def __init__(self, settings):
         self.settings = settings
 
+    def __print_date_heading(self, date):
+        (heading, subheading, _, reset) = self.settings.color_codes
+        day = date.strftime("%A")
+        datestr = date.strftime("%d-%m-%Y")
+        print(f"{subheading}Menu for {heading}{day}{reset} ({datestr})\n")
+
     def load_plugins(self):
         directory = self.settings.plugin_directory
         for file in sorted(os.listdir(directory)):
@@ -64,11 +71,23 @@ class Mat:
         return '\n'.join(lines)
 
     def print_menu(self, date):
+        if self.settings.tomorrow:
+            date += timedelta(days=1)
+
+        self.__print_date_heading(date)
         offerings = map(lambda p: self.describe_menu(p, date), self.load_plugins())
         print('\n\n'.join(offerings))
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Show today's food options.")
+    parser.add_argument(
+        '--tomorrow', '-t',
+        dest = 'tomorrow',
+        action = 'store_const',
+        const = True,
+        default = False,
+        help = 'show menu for tomorrow instead of today'
+    )
     parser.add_argument(
         '--verbose', '-v',
         dest = 'verbose',
