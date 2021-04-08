@@ -87,13 +87,13 @@ class Mat:
         (heading, _, _, reset) = self.settings.color_codes
         title = f"{heading}{restaurant.name}{reset}"
         lines = [title] + list(map(self.describe_dish, restaurant.dishes))
-        return '\n'.join(sorted(lines))
+        return '\n'.join(lines)
 
     def get_dishes(self, date):
         if not self._plugins:
             self._plugins = self._load_plugins()
         restaurants = map(lambda p: Restaurant(p.name(), p.food(foodAPI, date)), self._plugins)
-        return filter(lambda r: r.dishes, restaurants)
+        return sorted(filter(lambda r: r.dishes, restaurants), key = lambda r: r.name)
 
     def print_menu(self, date):
         offerings = map(lambda r: self.describe_menu(r, date), self.get_dishes(date))
