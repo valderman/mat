@@ -27,9 +27,10 @@ class Food:
         return f"{self.title}\n  {self.description}"
 
 class Restaurant:
-    def __init__(self, name, dishes):
+    def __init__(self, name, dishes, error=None):
         self.name = name
         self.dishes = dishes
+        self.error = error
 
 class FoodAPI:
     soup = BeautifulSoup
@@ -55,6 +56,23 @@ def plugin_directory():
         return dot_mat
     else:
         return "plugins"
+
+def make_resturant(plugin, date):
+    name = plugin.name()
+    try:
+        return Restaurant(name, plugin.food(foodAPI, date))
+    except Exception as e:
+        handler = getattr(plugin, "exception_handler", None)
+        if(callable(handler)):
+            handler(e)
+        else:
+            # TODO: 
+            # This indicates that the plugin hasn't declared an exception handler
+            #  and it's up to the plugin manager to handle the error, which probably should
+            #  be throwing the errors or collect them and throw them in bulk after
+            #  the happy cases are presented to the user.
+            return Restaurant(name, [], e)
+        
 
 def color_codes(use_color):
     if use_color:
@@ -93,14 +111,22 @@ class Mat:
     def describe_menu(self, restaurant, date):
         (heading, _, _, reset) = self.settings.color_codes
         title = f"{heading}{restaurant.name}{reset}"
-        lines = [title] + list(map(self.describe_dish, restaurant.dishes))
+        if(restaurant.error == None):
+            lines = [title] + list(map(self.describe_dish, restaurant.dishes))
+        else: 
+            lines = [
+                title, 
+                "  Error fetching menu:", 
+                f"    {restaurant.error}"]
         return '\n'.join(lines)
 
     def get_dishes(self, date):
         if not self._plugins:
             self._plugins = self._load_plugins()
-        restaurants = map(lambda p: Restaurant(p.name(), p.food(foodAPI, date)), self._plugins)
-        return sorted(filter(lambda r: r.dishes, restaurants), key = lambda r: r.name)
+        restaurants = map(lambda p: make_resturant(p, date), self._plugins)
+        return sorted(filter(
+            lambda r: r.dishes or (self.settings.verbose and r.error != None), 
+            restaurants), key = lambda r: r.name)
 
     def print_menu(self, date):
         if self.settings.tomorrow:
