@@ -5,6 +5,8 @@ import datetime
 from datetime import timedelta
 import argparse
 import os
+import sys
+import traceback
 
 try:
     from bs4 import BeautifulSoup
@@ -27,10 +29,11 @@ class Food:
         return f"{self.title}\n  {self.description}"
 
 class Restaurant:
-    def __init__(self, name, dishes, error=None):
+    def __init__(self, name, dishes=[], error=None, errorTrace=None):
         self.name = name
         self.dishes = dishes
         self.error = error
+        self.errorTrace = errorTrace
 
 class FoodAPI:
     soup = BeautifulSoup
@@ -62,16 +65,7 @@ def make_resturant(plugin, date):
     try:
         return Restaurant(name, plugin.food(foodAPI, date))
     except Exception as e:
-        handler = getattr(plugin, "exception_handler", None)
-        if(callable(handler)):
-            handler(e)
-        else:
-            # TODO: 
-            # This indicates that the plugin hasn't declared an exception handler
-            #  and it's up to the plugin manager to handle the error, which probably should
-            #  be throwing the errors or collect them and throw them in bulk after
-            #  the happy cases are presented to the user.
-            return Restaurant(name, [], e)
+        return Restaurant(name, error=e, errorTrace=traceback.format_exc())
         
 
 def color_codes(use_color):
@@ -108,16 +102,21 @@ class Mat:
         else:
             return dish_name
 
+    def describe_error(self, restaurant, title):
+        return [
+            title, 
+            "  Error fetching menu:", 
+            f"    {type(restaurant.error).__name__}\n",
+            f"{restaurant.errorTrace}"
+            ]
+
     def describe_menu(self, restaurant, date):
         (heading, _, _, reset) = self.settings.color_codes
         title = f"{heading}{restaurant.name}{reset}"
         if(restaurant.error == None):
             lines = [title] + list(map(self.describe_dish, restaurant.dishes))
         else: 
-            lines = [
-                title, 
-                "  Error fetching menu:", 
-                f"    {restaurant.error}"]
+            lines = self.describe_error(restaurant, title)
         return '\n'.join(lines)
 
     def get_dishes(self, date):
@@ -125,7 +124,7 @@ class Mat:
             self._plugins = self._load_plugins()
         restaurants = map(lambda p: make_resturant(p, date), self._plugins)
         return sorted(filter(
-            lambda r: r.dishes or (self.settings.verbose and r.error != None), 
+            lambda r: r.dishes or (not self.settings.quiet and r.error != None), 
             restaurants), key = lambda r: r.name)
 
     def print_menu(self, date):
@@ -152,7 +151,15 @@ def parse_args():
         action = 'store_const',
         const = True,
         default = False,
-        help='show detailed information about food alternatives'
+        help = 'show detailed information about food alternatives'
+    )
+    parser.add_argument(
+        '--quiet', '-q',
+        dest = 'quiet',
+        action = 'store_const',
+        const = True,
+        default = False,
+        help = 'Squelch errors'
     )
     parser.add_argument(
         '--color', '-c',
