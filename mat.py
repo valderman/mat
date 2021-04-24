@@ -5,6 +5,8 @@ import datetime
 from datetime import timedelta
 import argparse
 import os
+import sys
+import traceback
 
 try:
     from bs4 import BeautifulSoup
@@ -27,9 +29,11 @@ class Food:
         return f"{self.title}\n  {self.description}"
 
 class Restaurant:
-    def __init__(self, name, dishes):
+    def __init__(self, name, dishes=[], error=None, errorTrace=None):
         self.name = name
         self.dishes = dishes
+        self.error = error
+        self.errorTrace = errorTrace
 
 class FoodAPI:
     soup = BeautifulSoup
@@ -55,6 +59,14 @@ def plugin_directory():
         return dot_mat
     else:
         return "plugins"
+
+def make_resturant(plugin, date):
+    name = plugin.name()
+    try:
+        return Restaurant(name, plugin.food(foodAPI, date))
+    except Exception as e:
+        return Restaurant(name, error=e, errorTrace=traceback.format_exc())
+        
 
 def color_codes(use_color):
     if use_color:
@@ -90,17 +102,30 @@ class Mat:
         else:
             return dish_name
 
+    def describe_error(self, restaurant, title):
+        return [
+            title, 
+            "  Error fetching menu:", 
+            f"    {type(restaurant.error).__name__}\n",
+            f"{restaurant.errorTrace}"
+            ]
+
     def describe_menu(self, restaurant, date):
         (heading, _, _, reset) = self.settings.color_codes
         title = f"{heading}{restaurant.name}{reset}"
-        lines = [title] + list(map(self.describe_dish, restaurant.dishes))
+        if(restaurant.error == None):
+            lines = [title] + list(map(self.describe_dish, restaurant.dishes))
+        else: 
+            lines = self.describe_error(restaurant, title)
         return '\n'.join(lines)
 
     def get_dishes(self, date):
         if not self._plugins:
             self._plugins = self._load_plugins()
-        restaurants = map(lambda p: Restaurant(p.name(), p.food(foodAPI, date)), self._plugins)
-        return sorted(filter(lambda r: r.dishes, restaurants), key = lambda r: r.name)
+        restaurants = map(lambda p: make_resturant(p, date), self._plugins)
+        return sorted(filter(
+            lambda r: r.dishes or (not self.settings.quiet and r.error != None), 
+            restaurants), key = lambda r: r.name)
 
     def print_menu(self, date):
         if self.settings.tomorrow:
@@ -126,7 +151,15 @@ def parse_args():
         action = 'store_const',
         const = True,
         default = False,
-        help='show detailed information about food alternatives'
+        help = 'show detailed information about food alternatives'
+    )
+    parser.add_argument(
+        '--quiet', '-q',
+        dest = 'quiet',
+        action = 'store_const',
+        const = True,
+        default = False,
+        help = 'Squelch errors'
     )
     parser.add_argument(
         '--color', '-c',
