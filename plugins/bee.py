@@ -16,7 +16,7 @@ def food(api, date):
     if not api.is_weekday(date):
         return []
     if not api.pdf:
-        return []
+        raise EnvironmentError("PDF is not supported on this machine")
 
     def read_first_pdf_page(raw_pdf):
         with tempfile.NamedTemporaryFile() as pdf_file:

@@ -14,8 +14,8 @@ def food(api, date):
 
     response = api.requests.get('https://eattandoori.se/lunch.html')
     soup = api.soup(response.content, 'html.parser')
-
-    menu_id = 'v-pills-home3' if date.isocalendar().week % 2 else 'v-pills-profile3'
+    
+    menu_id = 'v-pills-home3' if api.week_is_even(date) else 'v-pills-profile3'
     raw_text = soup.find(id = menu_id).get_text()
     stripped_lines = map(lambda ln: ln.strip(), raw_text.splitlines())
     text = list(filter(lambda ln: ln, stripped_lines))
