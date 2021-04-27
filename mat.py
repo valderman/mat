@@ -46,6 +46,12 @@ class FoodAPI:
     def week_of(self, date):
         return date.isocalendar()[1]
 
+    def week_is_odd(self, date):
+        return not self.week_is_even(date)
+
+    def week_is_even(self, date):
+        return self.week_of(date) % 2 == 0
+
     def is_today(self, date):
         return date == datetime.date.today()
 
