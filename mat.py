@@ -71,16 +71,12 @@ def plugin_directory():
     else:
         return "plugins"
 
-        
-
 def color_codes(use_color):
     Color = namedtuple('Color', 'heading subheading body reset error')
     if use_color:
         return Color("\033[1m\033[95m", "\033[4m\033[94m", "", "\033[0m", "\033[91m")
     else:
         return Color("", "", "", "", "")
-
-
 
 class Mat:
     def __init__(self, settings):
@@ -114,7 +110,7 @@ class Mat:
         c = self.settings.color_codes
         self.stream.line(dish.title, c.subheading)
 
-        if self.settings.verbose:
+        if self.settings.verbose and dish.description:
             self.stream.with_indent(lambda s: s.line(dish.description, c.body))
 
     def describe_error(self, restaurant):
