@@ -1,5 +1,3 @@
-import datetime
-
 __days = [
     u"Måndag",
     u"Tisdag",

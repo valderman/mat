@@ -1,5 +1,3 @@
-import datetime
-
 def food(api, date):
     if not api.is_current_week(date):
         return []
@@ -19,12 +17,6 @@ def food(api, date):
         description = dish_text[len(dish)+2:]
         return api.food(dish, description.capitalize())
 
-    def get_evening_menu_text():
-        menu = text[text.index(u"Maträtter")+1:]
-        menu = list(filter(lambda ln: ln, menu[menu.index(u"Maträtter")+1:]))
-        end_line = menu.index(u"Dryck")
-        return menu[:end_line]
-
     def get_menu_items(menu_lines):
         lines = list(reversed(menu_lines))
         while lines:
@@ -38,7 +30,7 @@ def food(api, date):
         vegan = find_dish(u"Lunch Vegan")
         return map(describe_dish, [meat, vegan])
     except:
-        return list(get_menu_items(get_evening_menu_text()))
+        return []
 
 def name():
     return "Jinx"
