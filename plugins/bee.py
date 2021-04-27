@@ -1,5 +1,4 @@
 import tempfile
-import datetime
 
 __days = [
     u"MÅNDAG",

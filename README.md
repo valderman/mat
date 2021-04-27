@@ -10,6 +10,7 @@ If no plugin directory is specified, `$HOME/.mat` is used if it exists.
 If it doesn't, `./plugins` is used instead.
 
 ### Dependencies
+* For everything: `algebraic-data-types`
 * For restaurants with PDF menus (Bee): `PyMuPDF`
 * For all other restaurants: `bs4`
 
@@ -24,6 +25,7 @@ If it doesn't, `./plugins` is used instead.
 * [Bee](https://beebar.se/goteborg/)
 * [Blackstone](https://blackstonesteakhouse.se/goteborg/)
 * [Jinx](https://www.jinxfoodtruck.com)
+* [Solrosen](http://www.restaurangsolrosen.se)
 * [Tandoori Kitchen](https://eattandoori.se)
 
 ### Contributing
@@ -39,6 +41,7 @@ Plugins need to export two functions:
 
 `Food` objects are created using the function
 `api.food(dish, dish_description)`.
+Description may be `None`.
 
 For convenience, `api` also contains the following:
 * `soup`: reexport of `bs4.BeautifulSoup` if available, otherwise `None`
