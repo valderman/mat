@@ -10,6 +10,12 @@ def food(api, date):
     soup = api.soup(response.content, 'html.parser')
     menu = soup.find(id = "righttextarea")
 
+    def format_food(food_type, food_description):
+        if food_type == "Lasagne":
+            return f"{food_description} lasagne"
+        else:
+            return food_description
+
     def get_dishes(element):
         types = element.find_all(class_ = "greybold")
         descriptions = element.find_all("td")
@@ -19,7 +25,7 @@ def food(api, date):
 
             # Sallad is always the same
             if type_text != "Sallad":
-                yield api.food(f"{type_text}: {description_text}", None)
+                yield api.food(format_food(type_text, description_text), None)
 
     return get_dishes(menu)
 
