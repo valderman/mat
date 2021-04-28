@@ -24,7 +24,7 @@ If it doesn't, `./plugins` is used instead.
 * [Barabicu](https://barabicu.se)
 * [Bee](https://beebar.se/goteborg/)
 * [Blackstone](https://blackstonesteakhouse.se/goteborg/)
-* [Jinx](https://www.jinxfoodtruck.com)
+* ~[Jinx](https://www.jinxfoodtruck.com)~ (currently broken, help persuade them to publish their menu)
 * [Solrosen](http://www.restaurangsolrosen.se)
 * [Tandoori Kitchen](https://eattandoori.se)
 
