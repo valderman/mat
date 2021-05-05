@@ -1,0 +1,9 @@
+<link rel="stylesheet" type="text/css" href="menu.css">
+<script>
+    const toggleExpand = element => element.classList.toggle('expand');
+
+    window.addEventListener('load', () => {
+        const sublists = document.querySelectorAll('li li');
+        sublists.forEach(e => e.addEventListener('click', toggleExpand));
+    });
+</script>

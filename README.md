@@ -28,6 +28,12 @@ If it doesn't, `./plugins` is used instead.
 * [Solrosen](http://www.restaurangsolrosen.se)
 * [Tandoori Kitchen](https://eattandoori.se)
 
+### Generating an HTML menu (WIP)
+To generate a styled and somewhat interactive HTML menu, use `mat.py` and [Pandoc](https://pandoc.org):
+```bash
+./mat.py -mv | pandoc -f markdown -t html -H extra.html > menu.html
+```
+
 ### Contributing
 Is your favourite restaurant missing?
 [File a bug report](https://github.com/valderman/mat/issues/new)

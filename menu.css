@@ -1,0 +1,11 @@
+body {
+    font-family: sans-serif;
+}
+
+li {
+    line-height: 1.5;
+}
+
+li li:not(.expand) {
+    display: none;
+}
