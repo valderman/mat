@@ -13,7 +13,7 @@ If it doesn't, `./plugins` is used instead.
 * For everything: `algebraic-data-types`
 * For restaurants with PDF menus (Bee): `PyMuPDF`
 * For all other restaurants: `bs4`
-* To build website: `pandoc` (external program)
+* To build website: [Pandoc](https://pandoc.org)
 
 ### Troubleshooting
 * Not all restaurants show up!
@@ -29,10 +29,11 @@ If it doesn't, `./plugins` is used instead.
 * [Solrosen](http://www.restaurangsolrosen.se)
 * [Tandoori Kitchen](https://eattandoori.se)
 
-### Generating an HTML menu (WIP)
-To generate a styled and somewhat interactive HTML menu, use `mat.py` and [Pandoc](https://pandoc.org):
+### Generating an HTML menu
+To generate a styled and somewhat interactive HTML menu, use `mat.py` and [Pandoc](https://pandoc.org)
+with the provided wrapper script:
 ```bash
-./mat.py -mv | pandoc -f markdown -t html -H extra.html > menu.html
+./build-site.sh
 ```
 
 ### Contributing
