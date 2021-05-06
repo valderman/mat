@@ -1,7 +1,7 @@
 import re
 
 def food(api, date):
-    if not api.is_current_week(date):
+    if not api.is_today(date):
         return []
     if not api.soup:
         return []
