@@ -24,8 +24,8 @@ MAT_DIR = '.mat'
 
 class Food:
     def __init__(self, title, description):
-        self.title = title
-        self.description = description
+        self.title = title.strip()
+        self.description = description.strip()
 
     def pretty(self):
         return f"{self.title}\n  {self.description}"
