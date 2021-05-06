@@ -38,7 +38,8 @@ def food(api, date):
         while items:
             yield api.food(items.pop(), items.pop())
 
-    return list(get_dishes(todays_menu))
+    # Dagens Dal is always the same
+    return list(filter(lambda d: d.title != "Dagens Dal", get_dishes(todays_menu)))
 
 def name():
     return "Tandoori Kitchen"
