@@ -13,6 +13,7 @@ If it doesn't, `./plugins` is used instead.
 * For everything: `algebraic-data-types`
 * For restaurants with PDF menus (Bee): `PyMuPDF`
 * For all other restaurants: `bs4`
+* To build website: `pandoc` (external program)
 
 ### Troubleshooting
 * Not all restaurants show up!
