@@ -1,5 +1,5 @@
 #!/bin/sh
-./mat.py -mv | \
+../mat.py -mvp ../plugins | \
     pandoc -f markdown -t html \
         -V pagetitle:"Lunchdags!" \
         -H templates/head.html \
