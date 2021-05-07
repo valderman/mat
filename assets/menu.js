@@ -4,7 +4,16 @@ const toggleExpand = element => {
     }
 };
 
-const friday = new Date().getDay() === 5;
+const friday = new Date().getDay() === 5 || window.location.hash === "#friday";
+
+let friday_playing = false;
+const playFriday = () => {
+    if(!friday_playing) {
+        MIDIjs.play('assets/friday.mid');
+        friday_playing = true;
+        window.setTimeout(() => friday_playing = false, 5*60*1000);
+    }
+}
 
 const gravity = 0.981;
 
@@ -54,7 +63,7 @@ window.addEventListener('load', () => {
         document.body.classList.add('friday');
         document.addEventListener('keydown', e => {
             if(e.code == "KeyF") {
-                console.log("launching frog");
+                playFriday();
                 launchFrog();
             }
         });
