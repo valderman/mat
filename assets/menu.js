@@ -4,12 +4,19 @@ const toggleExpand = element => {
     }
 };
 
+const friday = new Date().getDay() === 5;
+
 window.addEventListener('load', () => {
-    const sublists = document.querySelectorAll('main > ul > li');
-    sublists.forEach(e => {
+    // Expanders for all menu items
+    document.querySelectorAll('section > ul > li').forEach(e => {
         if(e.firstElementChild) {
             e.classList.add('clickable');
         }
         e.addEventListener('click', e => toggleExpand(e.target))
     });
+
+    // Friday!
+    if (friday) {
+        document.body.classList.add('friday');
+    }
 });
