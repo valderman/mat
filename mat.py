@@ -1,4 +1,4 @@
-#!/bin/env python3
+#!/usr/bin/python3
 import requests
 import importlib.machinery
 import datetime
@@ -24,8 +24,8 @@ MAT_DIR = '.mat'
 
 class Food:
     def __init__(self, title, description):
-        self.title = title.strip()
-        self.description = description.strip()
+        self.title = title.strip() if title else title
+        self.description = description.strip() if description else description
 
     def pretty(self):
         return f"{self.title}\n  {self.description}"
@@ -88,7 +88,8 @@ class Mat:
         c = self.settings.color_codes
         day = date.strftime("%A")
         datestr = date.strftime("%d-%m-%Y")
-        print(f"{c.subheading}Menu for {c.heading}{day}{c.reset} ({datestr})\n")
+        prefix = c.subheading + "# " if self.settings.print_markdown else ""
+        print(f"{prefix}Menu for {c.heading}{day}{c.reset} ({datestr})\n")
 
     def _load_plugins(self):
         directory = self.settings.plugin_directory
@@ -108,10 +109,11 @@ class Mat:
 
     def describe_dish(self, dish):
         c = self.settings.color_codes
-        self.stream.line(dish.title, c.subheading)
+        prefix = "* " if self.settings.print_markdown else ""
+        self.stream.line(f"{prefix}{dish.title}", c.subheading)
 
         if self.settings.verbose and dish.description:
-            self.stream.with_indent(lambda s: s.line(dish.description, c.body))
+            self.stream.with_indent(lambda s: s.line(f"{prefix}{dish.description}", c.body))
 
     def describe_error(self, restaurant):
         self.stream.with_indent(lambda s: 
@@ -125,7 +127,8 @@ class Mat:
 
     def describe_menu(self, restaurant, date):
         c = self.settings.color_codes
-        self.stream.line(restaurant.name, c.heading)
+        prefix = "## " if self.settings.print_markdown else ""
+        self.stream.line(f"{prefix}{restaurant.name}", c.heading)
 
         if(restaurant.error == None):
             self.stream.with_indent(lambda s: 
@@ -199,6 +202,14 @@ def parse_args():
         action = 'store',
         default = plugin_directory(),
         help='load restaurant plugins from this directory'
+    )
+    parser.add_argument(
+        '--markdown', '-m',
+        dest = 'print_markdown',
+        action = 'store_const',
+        const = True,
+        default = False,
+        help='print menus as markdown'
     )
     return parser.parse_args()
 

@@ -1,0 +1,72 @@
+body {
+    font-family: sans-serif;
+    background-image: url(isekai-shokudou.jpg);
+    background-position-x: 50%;
+    background-size: 100% auto;
+    background-attachment: fixed;
+    margin: 0;
+    padding: 0;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+}
+
+body.friday {
+    background-image: url(grodanboll.svg);
+}
+
+@media(max-aspect-ratio: 2560/1440) {
+    body {
+        background-position-x: 50%;
+        background-size: auto 100%;    
+    }
+}
+
+main {
+    height: 100%;
+    border: 1px solid rgba(240, 240, 240, 0);
+    background-color: rgba(240, 240, 240, 0.9);
+    overflow-y: auto;
+}
+
+section {
+    background-color: white;
+    margin: auto;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    padding: 1em;
+    width: 40em;
+    max-width: 80%;
+    border-radius: 0.2rem;
+}
+
+h1 {
+    margin-top: 0;
+    color: #505060;
+}
+
+li {
+    line-height: 1.5;
+    text-decoration: none;
+    font-size: large;
+}
+
+li li {
+    font-size: 12pt;
+    margin-top: 0.25em;
+    margin-bottom: 0.5em;
+    color: #505060;
+}
+
+li:not(.expand) li {
+    display: none;
+}
+
+li.clickable::before {
+    content: "⊞ ";
+    cursor: pointer;
+}
+
+li.clickable.expand::before {
+    content: "⊟ ";
+}
