@@ -6,11 +6,11 @@ const toggleExpand = element => {
 
 const friday = new Date().getDay() === 5;
 
-const gravity = 9.81;
+const gravity = 0.981;
 
 const frog = (x, y, xvel, yvel, element) => {
-    if(x < 0 ||  x > window.innerWidth || y < 0) {
-        // Get rid of dead frogs
+    if(x < 0 ||  x > window.innerWidth || y < -50) {
+        document.body.removeChild(element);
         return;
     }
 
@@ -19,7 +19,7 @@ const frog = (x, y, xvel, yvel, element) => {
     element.style.left = `${renderX}px`;
     element.style.bottom = `${renderY}px`;
 
-    yvel = yvel + gravity;
+    yvel = yvel - gravity;
     x += xvel;
     y += yvel;
     window.setTimeout(() => frog(x, y, xvel, yvel, element), 10)
@@ -30,8 +30,14 @@ const launchFrog = () => {
     element.src = 'assets/grodanboll.svg';
     element.style.width = '50px';
     element.style.position = 'fixed';
+    const x = Math.random() * window.innerWidth;
+    const xvel = (Math.random() * 10 - 5) * 3;
+    const yvel = (Math.random() * 5 + 1) * 10;
+    if(xvel < 0) {
+        element.style.transform = 'scaleX(-1)';
+    }
     document.body.appendChild(element);
-    frog(100, 1000, 0, -10, element);
+    frog(x, 1, xvel, yvel, element);
 }
 
 window.addEventListener('load', () => {
