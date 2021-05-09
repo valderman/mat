@@ -1,14 +1,16 @@
 const toggleExpand = element => {
-    if(element.classList.contains('clickable')) {
+    if (element.classList.contains('clickable')) {
         element.classList.toggle('expand');
     }
 };
 
-const friday = new Date().getDay() === 5 || window.location.hash === "#friday";
+const today = new Date().getDay();
+const friday = today === 5 || window.location.hash === "#friday";
+const weekend = [0, 6].includes(today);
 
 let friday_playing = false;
 const playFriday = () => {
-    if(!friday_playing) {
+    if (!friday_playing) {
         MIDIjs.play('assets/friday.mid');
         friday_playing = true;
         window.setTimeout(() => friday_playing = false, 5*60*1000);
@@ -18,7 +20,7 @@ const playFriday = () => {
 const gravity = 0.981;
 
 const frog = (x, y, xvel, yvel, element) => {
-    if(x < 0 ||  x > window.innerWidth || y < -50) {
+    if (x < 0 ||  x > window.innerWidth || y < -50) {
         document.body.removeChild(element);
         return;
     }
@@ -49,10 +51,22 @@ const launchFrog = () => {
     frog(x, 1, xvel, yvel, element);
 }
 
-window.addEventListener('load', () => {
+const weekendMemeUrl = () => {
+    const images = 2;
+    const imageNumber = Math.ceil(Math.random()*2);
+    return `assets/weekend-${imageNumber}.jpg`;
+};
+
+window.addEventListener('DOMContentLoaded', () => {
+    if (weekend && !friday) {
+        document.body.classList.add('weekend');
+        document.querySelector('#weekendmeme').src = weekendMemeUrl();
+        return;
+    }
+
     // Expanders for all menu items
     document.querySelectorAll('section > ul > li').forEach(e => {
-        if(e.firstElementChild) {
+        if (e.firstElementChild) {
             e.classList.add('clickable');
         }
         e.addEventListener('click', e => toggleExpand(e.target))

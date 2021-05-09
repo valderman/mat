@@ -22,6 +22,13 @@ body.friday {
     }
 }
 
+#wrapper {
+    margin: auto;
+    width: 40em;
+    max-width: 80%;
+    margin-top: 2rem;
+}
+
 main {
     height: 100%;
     border: 1px solid rgba(240, 240, 240, 0);
@@ -31,18 +38,51 @@ main {
 
 section {
     background-color: white;
-    margin: auto;
     margin-top: 1rem;
     margin-bottom: 1rem;
     padding: 1em;
-    width: 40em;
-    max-width: 80%;
     border-radius: 0.2rem;
 }
 
+footer {
+    font-size: small;
+    text-align: center;
+}
+
 h1 {
-    margin-top: 0;
+    text-align: right;
+    font-size: 18pt;
     color: #505060;
+}
+
+.weekend h1 {
+    display: none;
+}
+
+#weekendmeme {
+    display: block;
+    margin: auto;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    width: 90%;
+}
+
+#weekendcontent {
+    display: none;
+}
+
+.weekend #weekendcontent {
+    text-align: center;
+    font-size: 14pt;
+    display: block;
+}
+
+.weekend h2 {
+    display: none;
+}
+
+.weekend ul {
+    display: none;
 }
 
 li {
