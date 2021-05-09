@@ -85,11 +85,11 @@ class Mat:
         self.stream = PrintStream(settings.color_codes.reset)
 
     def __print_date_heading(self, date):
-        c = self.settings.color_codes
-        day = date.strftime("%A")
-        datestr = date.strftime("%d-%m-%Y")
-        prefix = c.subheading + "# " if self.settings.print_markdown else ""
-        print(f"{prefix}Menu for {c.heading}{day}{c.reset} ({datestr})\n")
+        if not self.settings.print_markdown:
+            c = self.settings.color_codes
+            day = date.strftime("%A")
+            datestr = date.strftime("%d-%m-%Y")
+            print(f"{c.subheading}Menu for {c.heading}{day}{c.reset} ({datestr})\n")
 
     def _load_plugins(self):
         directory = self.settings.plugin_directory
