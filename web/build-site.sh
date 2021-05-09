@@ -1,7 +1,7 @@
-#!/bin/sh
+#!/bin/bash
 export DATETIME=`date +'%Y-%m-%d, %H:%M:%S'`
 
-case `date +%a` in
+case "$(date +%a)" in
 Mon)
     export WEEKDAY="Måndag"
     ;;
