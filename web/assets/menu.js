@@ -53,7 +53,7 @@ const launchFrog = () => {
 
 const weekendMemeUrl = () => {
     const images = 2;
-    const imageNumber = Math.ceil(Math.random()*2);
+    const imageNumber = Math.ceil(Math.random()*images);
     return `assets/weekend-${imageNumber}.jpg`;
 };
 
