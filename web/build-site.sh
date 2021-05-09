@@ -1,4 +1,5 @@
 #!/bin/bash
+export TZ=Europe/Stockholm
 export DATETIME=`date +'%Y-%m-%d, %H:%M:%S'`
 
 case "$(date +%a)" in
