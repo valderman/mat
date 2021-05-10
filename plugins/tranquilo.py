@@ -12,7 +12,7 @@ def food(api, date):
     if not api.is_current_week(date):
         return []
     if not (api.is_today(date) or api.is_tomorrow(date)):
-        raise NotImplementedError("Tranquilo currently only supports menus for today and tomorrow")
+        return []
     if not api.soup:
         return []
 

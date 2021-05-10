@@ -55,7 +55,7 @@ class FoodAPI:
     def is_today(self, date):
         return date == datetime.date.today()
 
-    def is_tomorrow(elf, date):
+    def is_tomorrow(self, date):
         return date == datetime.date.today() + timedelta(days=1)
 
     def is_current_week(self, date):
