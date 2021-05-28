@@ -19,6 +19,11 @@ def food(api, date):
     soup = api.soup(response.content, 'html.parser')
     text = soup.get_text().splitlines()
 
+    current_week = date.isocalendar()[1]
+    week_text = f"Vår Lunchmeny V. {current_week}"
+    if not week_text in text:
+        return []
+
     today = __days[date.isoweekday() - 1]
     today_line = text.index(today)
 
