@@ -28,6 +28,7 @@ If it doesn't, `./plugins` is used instead.
 * ~[Jinx](https://www.jinxfoodtruck.com)~ (currently broken, help persuade them to publish their menu)
 * [Solrosen](http://www.restaurangsolrosen.se)
 * [Tandoori Kitchen](https://eattandoori.se)
+* [Tranquilo](https://tranquilo.se)
 
 ### Generating an HTML menu
 To generate a styled and somewhat interactive HTML menu, use `mat.py` and [Pandoc](https://pandoc.org)
