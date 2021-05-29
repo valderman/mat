@@ -1,14 +1,17 @@
+const today = new Date().getDay();
+const friday = today === 5 || window.location.hash === "#friday";
+const weekend = [0, 6].includes(today);
+const gravity = 0.981;
+const blackstoneId = '#blackstone';
+
+let friday_playing = false;
+
 const toggleExpand = element => {
     if (element.classList.contains('clickable')) {
         element.classList.toggle('expand');
     }
 };
 
-const today = new Date().getDay();
-const friday = today === 5 || window.location.hash === "#friday";
-const weekend = [0, 6].includes(today);
-
-let friday_playing = false;
 const playFriday = () => {
     if (!friday_playing) {
         MIDIjs.play('assets/friday.mid');
@@ -16,8 +19,6 @@ const playFriday = () => {
         window.setTimeout(() => friday_playing = false, 5*60*1000);
     }
 }
-
-const gravity = 0.981;
 
 const frog = (x, y, xvel, yvel, element) => {
     if (x < 0 ||  x > window.innerWidth || y < -50) {
@@ -78,8 +79,18 @@ const veggiesToSauce = () => {
     }
 };
 
+const frontendMode = () => {
+    veggiesToSauce();
+    const blackstone = document.querySelector(blackstoneId);
+    blackstone.nextElementSibling.querySelectorAll('li > ul > li').forEach(element => {
+        element.innerText += ' samt grönsås';
+    });
+    blackstone.nextElementSibling.querySelectorAll('section > ul > li').forEach(element => {
+        element.firstChild.textContent += ' med grönsås';
+    });
+};
+
 const onlyBlackstone = () => {
-    const blackstoneId = '#blackstone';
     document.querySelector(blackstoneId).classList.add('rainbow-text');
     document.querySelector(blackstoneId).classList.add('stupid-animation');
     document.querySelectorAll(`h2:not(${blackstoneId})`).forEach(element => {
@@ -113,7 +124,7 @@ const updateDisplayMode = (previousMode, reloadIfNecessary) => {
         case 'normal':
             break;
         case 'frontend':
-            veggiesToSauce();
+            frontendMode();
             break;
         case 'tobias':
             onlyBlackstone();
