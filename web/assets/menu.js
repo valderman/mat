@@ -57,6 +57,73 @@ const weekendMemeUrl = () => {
     return `assets/weekend-${imageNumber}.jpg`;
 };
 
+const veggiesToSauce = () => {
+    var walker = document.createTreeWalker(
+        document.body, 
+        NodeFilter.SHOW_TEXT, 
+        null
+    );
+
+    var node;
+
+    const regexes = [
+        /grönsak/i,
+        /grönsåss/i
+    ];
+    while(node = walker.nextNode()) {
+        node.nodeValue = regexes.reduce(
+            (text, regex) => text.replace(regex, "grönsås"),
+            node.nodeValue
+        );
+    }
+};
+
+const onlyBlackstone = () => {
+    const blackstoneId = '#blackstone';
+    document.querySelector(blackstoneId).classList.add('rainbow-text');
+    document.querySelector(blackstoneId).classList.add('stupid-animation');
+    document.querySelectorAll(`h2:not(${blackstoneId})`).forEach(element => {
+        const notBlackstone = document.createTextNode('Inte Blackstone ');
+        const tinyName = document.createElement('SUP');
+        tinyName.innerText = `(${element.innerText}, som om nån skulle bry sig)`;
+
+        element.innerText = '';
+        element.appendChild(notBlackstone);
+        element.appendChild(tinyName);
+        element.classList.add('not-blackstone');
+        element.nextElementSibling.classList.add('not-blackstone');
+    });
+};
+
+const getModeSetting = () => {
+    const valueFromLocalStorage = localStorage.getItem('displaymode');
+    return valueFromLocalStorage || document.querySelector('#mode').value;
+};
+
+const saveModeSetting = mode => {
+    const previousMode = localStorage.getItem('displaymode') || 'normal';
+    localStorage.setItem('displaymode', mode);
+    document.querySelector('#mode').value = mode;
+    return previousMode;
+};
+
+const updateDisplayMode = (previousMode, reloadIfNecessary) => {
+    const currentMode = getModeSetting();
+    switch(currentMode) {
+        case 'normal':
+            break;
+        case 'frontend':
+            veggiesToSauce();
+            break;
+        case 'tobias':
+            onlyBlackstone();
+            break;
+    }
+    if (previousMode != currentMode && previousMode != 'normal' && reloadIfNecessary) {
+        location.reload();
+    }
+};
+
 window.addEventListener('DOMContentLoaded', () => {
     if (weekend && !friday) {
         document.body.classList.add('weekend');
@@ -82,4 +149,12 @@ window.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    // Mode select
+    document.querySelector('#mode').addEventListener('change', evt => {
+        const previousMode = saveModeSetting(evt.target.value);
+        updateDisplayMode(previousMode, true);
+    });
+    const previousMode = saveModeSetting(getModeSetting());
+    updateDisplayMode(previousMode, false);
 });

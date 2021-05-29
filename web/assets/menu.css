@@ -55,6 +55,40 @@ h1 {
     color: #505060;
 }
 
+.not-blackstone, .not-blackstone li {
+    font-size: small;
+    color: #e0e0e0;
+}
+
+.not-blackstone sup {
+    font-weight: lighter;
+    vertical-align: baseline;
+}
+
+.rainbow-text {
+    background-image: linear-gradient(to left, violet, indigo, blue, green, yellow, orange, red);
+    background-size: 10em;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: rainbow linear 5000ms infinite;
+}
+
+@keyframes rainbow {
+    0% {
+        background-position-x: 0%;
+    }
+    100% {
+        background-position-x: 100%;
+    }
+}
+
+#mode {
+    border-radius: 2px;
+    border: 0;
+    background: transparent;
+}
+
 .weekend h1 {
     display: none;
 }
