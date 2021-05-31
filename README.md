@@ -27,7 +27,7 @@ If it doesn't, `./plugins` is used instead.
 * [Blackstone](https://blackstonesteakhouse.se/goteborg/)
 * ~[Jinx](https://www.jinxfoodtruck.com)~ (currently broken, help persuade them to publish their menu)
 * [Solrosen](http://www.restaurangsolrosen.se)
-* [Tandoori Kitchen](https://eattandoori.se)
+* ~[Tandoori Kitchen](https://eattandoori.se)~ (looks like they lost their domain to squatters)
 * [Tranquilo](https://tranquilo.se)
 
 ### Generating an HTML menu
