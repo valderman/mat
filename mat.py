@@ -20,11 +20,22 @@ try:
 except:
     fitz = None
 
+try:
+    import json
+except:
+    json = None
+
 MAT_DIR = '.mat'
+
+def truncate(max_length, str):
+    if len(str) > max_length:
+        return str[:max_length] + '...'
+    else:
+        return str
 
 class Food:
     def __init__(self, title, description):
-        self.title = title.strip() if title else title
+        self.title = truncate(100, title.strip().replace('\n', ' ')) if title else title
         self.description = description.strip() if description else description
 
     def pretty(self):
@@ -41,6 +52,7 @@ class FoodAPI:
     soup = BeautifulSoup
     requests = requests
     pdf = fitz
+    json = json
     food = Food
 
     def week_of(self, date):

@@ -12,6 +12,7 @@ If it doesn't, `./plugins` is used instead.
 ### Dependencies
 * For everything: `algebraic-data-types`
 * For restaurants with PDF menus (Bee): `PyMuPDF`
+* For restaurants with JSON "menus" (Jinx): `json`
 * For all other restaurants: `bs4`
 * To build website: [Pandoc](https://pandoc.org)
 
