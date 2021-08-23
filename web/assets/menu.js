@@ -82,17 +82,23 @@ const veggiesToSauce = () => {
 const frontendMode = () => {
     veggiesToSauce();
     const blackstone = document.querySelector(blackstoneId);
-    blackstone.nextElementSibling.querySelectorAll('li > ul > li').forEach(element => {
-        element.innerText += ' samt grönsås';
-    });
-    blackstone.nextElementSibling.querySelectorAll('section > ul > li').forEach(element => {
-        element.firstChild.textContent += ' med grönsås';
-    });
+    if (blackstone) {
+        blackstone.nextElementSibling.querySelectorAll('li > ul > li').forEach(element => {
+            element.innerText += ' samt grönsås';
+        });
+        blackstone.nextElementSibling.querySelectorAll('section > ul > li').forEach(element => {
+            element.firstChild.textContent += ' med grönsås';
+        });
+    }
 };
 
 const onlyBlackstone = () => {
-    document.querySelector(blackstoneId).classList.add('rainbow-text');
-    document.querySelector(blackstoneId).classList.add('stupid-animation');
+    const blackstone = document.querySelector(blackstoneId);
+    if (!blackstone) {
+        return;
+    }
+    blackstone.classList.add('rainbow-text');
+    blackstone.classList.add('stupid-animation');
     document.querySelectorAll(`h2:not(${blackstoneId})`).forEach(element => {
         const notBlackstone = document.createTextNode('Inte Blackstone ');
         const tinyName = document.createElement('SUP');
