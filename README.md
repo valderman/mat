@@ -12,7 +12,6 @@ If it doesn't, `./plugins` is used instead.
 ### Dependencies
 * For everything: `algebraic-data-types`
 * For restaurants with PDF menus (Bee): `PyMuPDF`
-* For restaurants with JSON "menus" (Jinx): `json`
 * For all other restaurants: `bs4`
 * To build website: [Pandoc](https://pandoc.org)
 
@@ -26,9 +25,7 @@ If it doesn't, `./plugins` is used instead.
 * [Barabicu](https://barabicu.se)
 * [Bee](https://beebar.se/goteborg/)
 * [Blackstone](https://blackstonesteakhouse.se/goteborg/)
-* ~[Jinx](https://www.jinxfoodtruck.com)~ (currently broken, help persuade them to publish their menu)
 * [Solrosen](http://www.restaurangsolrosen.se)
-* ~[Tandoori Kitchen](https://eattandoori.se)~ (looks like they lost their domain to squatters)
 * [Tranquilo](https://tranquilo.se)
 
 ### Generating an HTML menu
