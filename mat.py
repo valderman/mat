@@ -5,6 +5,7 @@ import datetime
 from datetime import timedelta
 import argparse
 import os
+import re
 import sys
 from mats.print_stream import PrintStream
 import traceback
@@ -26,6 +27,7 @@ except:
     json = None
 
 MAT_DIR = '.mat'
+INFERRED_TITLE_MAX_LENGTH = 50
 
 def truncate(max_length, str):
     if len(str) > max_length:
@@ -112,6 +114,15 @@ class Mat:
                 loader = importlib.machinery.SourceFileLoader(module, path)
                 yield loader.load_module(module)
 
+    def infer_title(self, description):
+        if len(description) > INFERRED_TITLE_MAX_LENGTH:
+            truncated_description = description[:INFERRED_TITLE_MAX_LENGTH-3].strip()
+            if description[INFERRED_TITLE_MAX_LENGTH-2] == " ":
+                return (truncated_description + "...")
+            return re.sub(r"[ .,-:;!]+[^ ]+$", "", truncated_description) + "..."
+        else:
+            return description
+
     def make_resturant(self, plugin, date):
         name = plugin.name()
         try:
@@ -120,9 +131,11 @@ class Mat:
             return Restaurant(name, error=e, errorTrace=traceback.format_exc())
 
     def describe_dish(self, dish):
+        title = dish.title if dish.title else self.infer_title(dish.description)
+
         c = self.settings.color_codes
         prefix = "* " if self.settings.print_markdown else ""
-        self.stream.line(f"{prefix}{dish.title}", c.subheading)
+        self.stream.line(f"{prefix}{title}", c.subheading)
 
         if self.settings.verbose and dish.description:
             self.stream.with_indent(lambda s: s.line(f"{prefix}{dish.description}", c.body))
@@ -153,9 +166,11 @@ class Mat:
         if not self._plugins:
             self._plugins = self._load_plugins()
         restaurants = map(lambda p: self.make_resturant(p, date), self._plugins)
-        return sorted(filter(
-            lambda r: r.dishes or (not self.settings.quiet and r.error != None), 
-            restaurants), key = lambda r: r.name)
+        filtered_restaurants = filter(
+            lambda r: r.dishes or (not self.settings.quiet and r.error != None),
+            restaurants
+        )
+        return sorted(filtered_restaurants, key = lambda r: r.name)
 
     def print_menu(self, date):
         if self.settings.tomorrow:

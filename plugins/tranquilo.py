@@ -15,9 +15,7 @@ def food(api, date):
     types = today.find_all("h3")
     descriptions = today.find_all("p")[1:]
     for (food_type, description) in zip(types, descriptions):
-        yield api.food(
-            food_type.get_text().strip(), 
-            description.get_text().strip())
+        yield api.food(None, description.get_text().strip())
 
 def name():
     return "Tranquilo"
