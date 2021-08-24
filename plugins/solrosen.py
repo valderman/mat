@@ -25,7 +25,7 @@ def food(api, date):
 
             # Sallad is always the same
             if type_text != "Sallad":
-                yield api.food(format_food(type_text, description_text), None)
+                yield api.food(None, format_food(type_text, description_text))
 
     return get_dishes(menu)
 
