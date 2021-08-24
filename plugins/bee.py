@@ -21,7 +21,7 @@ def food(api, date):
         with tempfile.NamedTemporaryFile() as pdf_file:
             pdf_file.write(raw_pdf)
             pdf = api.pdf.open(pdf_file.name)
-            return pdf.load_page(0).get_text()
+            return pdf.get_page_text(0)
 
     response = api.requests.get("https://www.beebar.se/goteborg/mat-dryck/veckolunch")
     pdf_lines = read_first_pdf_page(response.content).splitlines()

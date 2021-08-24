@@ -12,6 +12,7 @@ If it doesn't, `./plugins` is used instead.
 ### Dependencies
 * For everything: `algebraic-data-types`
 * For restaurants with PDF menus (Bee): `PyMuPDF`
+* For restaurants with JSON "menus" (Jinx): `json`
 * For all other restaurants: `bs4`
 * To build website: [Pandoc](https://pandoc.org)
 
@@ -23,8 +24,10 @@ If it doesn't, `./plugins` is used instead.
 
 ### Supported restaurants
 * [Barabicu](https://barabicu.se)
+* [Bastard Burgers](https://bastardburgers.com/se/restaurants/sodra-larmgatan/)
 * [Bee](https://beebar.se/goteborg/)
 * [Blackstone](https://blackstonesteakhouse.se/goteborg/)
+* [Jinx](https://www.jinxfoodtruck.com)
 * [Solrosen](http://www.restaurangsolrosen.se)
 * [Tranquilo](https://tranquilo.se)
 
@@ -53,6 +56,7 @@ Description may be `None`.
 For convenience, `api` also contains the following:
 * `soup`: reexport of `bs4.BeautifulSoup` if available, otherwise `None`
 * `pdf`: reexport of `fitz` from `PyMuPDF` if available, otherwise `None`
+* `json`: reexport of `json` from `json` if available, otherwise `None`
 * `requests`: reexport of `requests`
 * `is_today(date)`: returns `True` if `date` is today's date
 * `is_current_week(date)`: returns `True` if `date` is in the current week
