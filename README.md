@@ -28,6 +28,7 @@ If it doesn't, `./plugins` is used instead.
 * [Bee](https://beebar.se/goteborg/)
 * [Blackstone](https://blackstonesteakhouse.se/goteborg/)
 * [Jinx](https://www.jinxfoodtruck.com)
+* [Schnitzelplatz](https://schnitzelplatz.se/)
 * [Solrosen](http://www.restaurangsolrosen.se)
 * [Tranquilo](https://tranquilo.se)
 
