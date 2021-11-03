@@ -17,7 +17,7 @@ __weekly_headers = [
 ]
 def name():
     return "Schnitzelplatz"
-    
+
 def food(api, date):
     def collapse_paragraphs(ps):
         return dict(map(
@@ -44,6 +44,9 @@ def food(api, date):
         return menu
 
 
+    def create_heading(fooditem, heading = ""):
+        return api.food(heading + fooditem.split(",")[0], fooditem)
+
 
     if (not api.is_current_week(date) 
             or not api.is_weekday(date) 
@@ -60,9 +63,12 @@ def food(api, date):
     assert all(heading in parsed_menu 
         for heading in __days + __weekly_headers)
 
-    return [
-        api.food("Alltid på Platz: ", parsed_menu["Alltid på Platz"]),
-        api.food("Veckans Schnitzel: ", parsed_menu["Veckans Schnitzel"]),
-        api.food("Veckans Vegetariska: ", parsed_menu["Veckans vegetariska"]),
-        api.food("Dagens: ", parsed_menu[__days[date.weekday()]])
-    ]
+
+    return list(map(
+        lambda x: create_heading(parsed_menu[x]), 
+        [
+            "Alltid på Platz", 
+            "Veckans Schnitzel", 
+            "Veckans vegetariska", 
+            __days[date.weekday()]
+        ]))
